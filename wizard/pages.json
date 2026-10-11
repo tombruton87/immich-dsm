@@ -1,0 +1,22 @@
+, {
+    "step_title": "Immich",
+    "items": [{
+        "type": "textfield",
+        "desc": "The package makes your Immich administrator account at the first start, with a strong password shown once in the Immich window in DSM. You sign in to Immich with this email.",
+        "subitems": [
+            { "key": "wizard_admin_email", "desc": "Your email (sign-in)", "defaultValue": "", "validator": { "allowBlank": false, "regex": { "expr": "/^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}\$/", "errorText": "Looks like you@example.com" } } },
+            { "key": "wizard_admin_name", "desc": "Your name", "defaultValue": "", "validator": { "allowBlank": false, "regex": { "expr": "/^[^\\\\u0000-\\\\u001f]{1,60}\$/", "errorText": "Up to 60 characters" } } }
+        ]
+    }, {
+        "type": "textfield",
+        "desc": "Photos already on this Synology — Immich can show a folder of them, read-only: it never changes, moves or deletes them. Usually the photo shared folder. Leave it empty to start with only what phones upload; folders can be added later in the window.",
+        "subitems": [{ "key": "wizard_photo_dir", "desc": "Photo folder (optional)", "defaultValue": "/volume1/photo", "validator": { "allowBlank": true, "regex": { "expr": "/^(\\\\/volume[0-9]+\\\\/[^\\\\n\\",\$\\\\\\\\]+)?\$/", "errorText": "A folder like /volume1/photo, or empty" } } }]
+    }, {
+        "type": "singleselect",
+        "desc": "Machine learning lets Immich search by what's in a photo and recognise faces. It needs 1–2 GB of memory while it works; this Synology has about $(awk '/^MemTotal:/ {printf "%d", $2 / 1048576 + 0.5}' /proc/meminfo 2>/dev/null || echo "?") GB. With less than 6 GB, Immich runs better without it. It can be switched in the window at any time.",
+        "subitems": [
+            { "key": "wizard_ml_on", "desc": "Machine learning on: smart search and faces", "defaultValue": $([ "$(awk '/^MemTotal:/ {print int($2 / 1024)}' /proc/meminfo 2>/dev/null)" -lt 5000 ] 2>/dev/null && echo false || echo true) },
+            { "key": "wizard_ml_off", "desc": "Machine learning off: less memory, everything else the same", "defaultValue": $([ "$(awk '/^MemTotal:/ {print int($2 / 1024)}' /proc/meminfo 2>/dev/null)" -lt 5000 ] 2>/dev/null && echo true || echo false) }
+        ]
+    }]
+}

@@ -1,0 +1,54 @@
+    <section data-page="libraries" hidden>
+      <div class="note">What <a class="im-link" href="#" target="_blank" rel="noopener">Immich</a> has, and where it comes from: photos and videos uploaded from phones and the web, and photo folders already on this Synology, which Immich reads but never changes.</div>
+      <div class="tiles" id="lb-tiles"></div>
+      <div class="card"><h2>Photo folders on this Synology<span class="right"><button class="btn" id="lb-scan-all" data-app>Scan all now</button></span></h2>
+        <table><thead><tr><th>Library</th><th>Shown to</th><th class="n">Photos</th><th class="n">Videos</th><th>Last scan</th><th class="n"></th></tr></thead><tbody id="lb-list"></tbody></table></div>
+      <div class="card"><h2>Add a photo folder</h2><div class="in">
+        <p class="muted small">A shared folder, or a folder inside one, mounted <b>read-only</b>: Immich shows its photos and videos but never changes, moves or deletes them. DSM's own thumbnails (<code>@eaDir</code>), the recycle bin and snapshots are skipped. Up to five folders. Synology Photos keeps each person's own photos in <code>/volume1/homes/&lt;name&gt;/Photos</code>.</p>
+        <label class="f"><span>Folder</span><input type="text" id="lb-dir" list="lb-folders" placeholder="/volume1/photo" autocomplete="off"><datalist id="lb-folders"></datalist></label>
+        <label class="f"><span>Whose timeline the photos appear in</span><select id="lb-owner"></select></label>
+        <button class="btn primary" id="lb-add" data-app>Add and scan</button></div></div>
+      <div class="card"><h2>Uploads</h2><div class="in">
+        <p class="small">Phones and the web upload to the <b>immich</b> shared folder, in <code>photos</code>: the originals in <code>photos/upload</code> (or, once Immich's storage template is on, in <code>photos/library</code>, a folder for each person), with thumbnails and converted videos beside them. File Station shows them — include the whole <b>immich</b> shared folder in Hyper Backup.</p>
+        <table><tbody id="lb-upload"></tbody></table></div></div>
+      <div class="card"><h2>Immich is working on</h2><table><tbody id="lb-queues"></tbody></table></div>
+    </section>
+
+    <section data-page="ml" hidden>
+      <div class="note">Machine learning lets Immich search by what's in a photo ("dog on a beach", "red car"), recognise faces and gather them into people, find duplicates and read the text in photos. It runs in a container of its own that needs <b>1–2 GB of memory</b> while it works. On a Synology with 4 GB or less, turning it off keeps everything else quick — uploads, the timeline, albums, sharing and the map work just the same without it.</div>
+      <div class="card"><h2>Machine learning<span class="right" id="ml-chip"></span></h2><div class="in">
+        <p id="ml-state"></p><p id="ml-btn"></p></div>
+        <table><tbody id="ml-features"></tbody></table></div>
+      <div class="card"><h2>Memory</h2><table><tbody id="ml-mem"></tbody></table><div class="in"><p class="muted small" id="ml-mem-note"></p></div></div>
+      <div class="card"><h2>Analysing</h2><table><tbody id="ml-queues"></tbody></table></div>
+    </section>
+
+    <section data-page="users" hidden>
+      <div class="note">Everyone with an Immich account. Each person has their own timeline, uploads and albums; administrators also look after Immich itself. Quotas, removing someone and the rest are in Immich → Administration → Users.</div>
+      <div class="note warn" id="us-api" hidden>The package can't use Immich's API — its key may have been removed in Immich (Account settings → API keys). <b>Reset the administrator's password</b> below and the package connects again.</div>
+      <div class="card"><table><thead><tr><th>Person</th><th>Role</th><th class="n">Photos</th><th class="n">Videos</th><th class="n">Size</th></tr></thead><tbody id="users"></tbody></table></div>
+      <div class="card"><h2>Add someone</h2><div class="in">
+        <label class="f"><span>Email — they sign in with it</span><input type="email" id="nu-email" placeholder="alice@example.com" autocomplete="off"></label>
+        <label class="f"><span>Name</span><input type="text" id="nu-name" maxlength="60" placeholder="Alice" autocomplete="off"></label>
+        <label class="f"><span>Role</span><select id="nu-role"><option value="user">User</option><option value="admin">Administrator</option></select></label>
+        <button class="btn primary" id="nu-add" data-app>Add</button><p class="muted small">A password is made for them and shown once; Immich asks them to choose their own at the first sign-in.</p></div></div>
+      <div class="card"><h2>Locked out?</h2><div class="in">
+        <p class="muted small">Resets the password of Immich's administrator with Immich's own <code>immich-admin reset-admin-password</code>. The new password is shown once, and everyone signed in as the administrator is signed out.</p>
+        <button class="btn" id="us-reset" data-app>Reset the administrator's password</button></div></div>
+    </section>
+
+    <section data-page="phones" hidden>
+      <div class="note">The Immich app backs up each phone's camera roll to this Synology — in the background, new photos only — and shows the whole library. Everyone signs in with their own Immich account.</div>
+      <div class="card"><h2>Set up a phone</h2><div class="in" style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <img id="ph-qr" class="qr" alt="QR code of the server address">
+        <div style="flex:1;min-width:260px">
+          <ol class="steps">
+            <li>Install <b>Immich</b>: <a href="https://apps.apple.com/app/immich/id1613945652" target="_blank" rel="noopener">App Store</a> for iPhone and iPad, <a href="https://play.google.com/store/apps/details?id=app.alextran.immich" target="_blank" rel="noopener">Google Play</a> or <a href="https://f-droid.org/packages/app.alextran.immich/" target="_blank" rel="noopener">F-Droid</a> for Android.</li>
+            <li>Open it and enter the server address:<div class="mono-box" id="ph-url"></div></li>
+            <li>Sign in with your Immich email and password.</li>
+            <li>Tap the cloud icon, pick the albums to back up, and turn backup on — and background backup, so it carries on by itself.</li>
+          </ol>
+          <p class="muted small" id="ph-reach"></p>
+          <p class="muted small">Scanned with the phone's camera, the QR code opens the same address in its browser: Immich's web app, a quick way to check the phone reaches it.</p>
+        </div></div></div>
+    </section>
